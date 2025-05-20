@@ -41,6 +41,7 @@
 \usepackage{csquotes}
 \usepackage{markdown}
 \usepackage{longtable}
+\usepackage{setspace}
 
 
 % Set page size and margins
@@ -319,64 +320,56 @@ E-mail: XX@XX.XX\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ÍNDICE DE QUADROS E FIGURAS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifdefined\usarindicequadros
+    \renewcommand{\listtablename}{\color{procegreen}\Large\bfseries\uppercase{ÍNDICE DE QUADROS}}
+    
+    % List of tables (quadros)
+    \clearpage
+    \vspace*{-2cm}
+    \listoftables
+    \thispagestyle{fancy}  % Force fancy style after listoftables
+\fi
 
-\renewcommand{\listfigurename}{\color{procegreen}\Large\bfseries\uppercase{ÍNDICE DE FIGURAS}}
-\renewcommand{\listtablename}{\color{procegreen}\Large\bfseries\uppercase{ÍNDICE DE QUADROS}}
-
-% List of tables (quadros)
-\clearpage
-\vspace*{-2cm}
-\listoftables
-\thispagestyle{fancy}  % Force fancy style after listoftables
-
-\vspace{1.5cm}
-% List of figures
-\listoffigures
-\thispagestyle{fancy}  % Force fancy style after listoffigures
+\ifdefined\usarindicefiguras
+    \renewcommand{\listfigurename}{\color{procegreen}\Large\bfseries\uppercase{ÍNDICE DE FIGURAS}}
+    \vspace{1.5cm}
+    % List of figures
+    \listoffigures
+    \thispagestyle{fancy}  % Force fancy style after listoffigures
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% SIGLAS E ACRÓNIMOS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% SIGLAS E ACRÓNIMOS
-\clearpage
-\thispagestyle{fancy}
-\vspace*{-0.5cm}
-{\color{procegreen}\Large\bfseries\uppercase{SIGLAS E ACRÓNIMOS}\par}
-\vspace{0.5cm}
-
-\begingroup
-\renewcommand*{\glossarysection}[2][]{} % impede qualquer título ou secção
-\printglossary[type=\acronymtype]
-\endgroup
+\ifdefined\usarsiglas
+    \clearpage
+    \thispagestyle{fancy}
+    \vspace*{-0.5cm}
+    {\color{procegreen}\Large\bfseries\uppercase{SIGLAS E ACRÓNIMOS}\par}
+    \vspace{0.5cm}
+    
+    \begingroup
+    \renewcommand*{\glossarysection}[2][]{} % impede qualquer título ou secção
+    \printglossary[type=\acronymtype]
+    \endgroup
+\fi
 
 \thispagestyle{fancy} % repõe caso o glossário tenha alterado o estilo
-
 \clearpage
-\pagenumbering{arabic}
-\setcounter{page}{1}
-
-
-%\begin{tabular}{p{3cm}p{13.5cm}p{2cm}}
-%\textbf{DGS} & Direção-Geral da Saúde & 1,3 \\
-%\textbf{ULSO} & Unidade Local de Saúde do Oeste & 1 \\
-%\textbf{XXXXXXX} & kfsdkfsdhf skdjfhskjdfhksdhfsd fsdf & 2 \\
-%\textbf{XXXXXXX} & kfsdkfsdhf skdjfhskjdfhksdhfsd fsdf & 2  \\
-%\textbf{XXXXXXX} & kfsdkfsdhf skdjfhskjdfhksdhfsd fsdf & 2  \\
-%\textbf{XXXXXXX} & kfsdkfsdhf skdjfhskjdfhksdhfsd fsdf & 2  \\
-%\end{tabular}
-%\clearpage
-
 
 %% RESET PAGE NUMBERING TO ARABIC
 \pagenumbering{arabic} % Switch to arabic numerals
 \setcounter{page}{1} % Reset page counter to 1
 \clearpage
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%
-%%%%%%%
-\input{siglas}
-\input{conteudo}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CONTEUDO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{onehalfspace}
+    \setlist{topsep=1em, itemsep=1em}
+    \input{conteudo}
+\end{onehalfspace}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
