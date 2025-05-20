@@ -1,0 +1,442 @@
+%% -----------------------------------------------------------------------------
+%% Copyright (c) 2025 por Estêvão Soares dos Santos,
+%% em colaboração com o Departamento de Saúde Pública e das Populações do Oeste (DSPPO)
+%%
+%% Este ficheiro LaTeX constitui código-fonte protegido por direitos de autor.
+%% É licenciado sob os termos da Creative Commons CC BY-NC-SA 4.0.
+%% O seu uso, modificação e redistribuição são permitidos exclusivamente para fins não comerciais,
+%% desde que seja atribuída a autoria e quaisquer obras derivadas sejam partilhadas sob a mesma licença.
+%%
+%% É expressamente proibida a remoção desta nota de atribuição,
+%% nos termos da licença CC BY-NC-SA 4.0.
+%%
+%% NOTA: Todos os logótipos, emblemas, brasões e imagens incluídos neste documento
+%% são propriedade da República Portuguêsa e estão protegidos por legislação própria.
+%% O uso desses elementos fora do contexto legal aplicável não é autorizado por este documento.
+%%
+%% SPDX-License-Identifier: CC-BY-NC-SA-4.0
+%% -----------------------------------------------------------------------------
+
+%% -----------------------------------------------------------------------------
+%% COMO UTILIZAR:
+%%  - main.tex:        Este ficheiro contem o template do documento. Genéricamente não deve ser alterado.
+%%  - metadata.tex:    Metadados do documento (titulo, data, autor, ficha tecnica, etc...)
+%%  - changelog.md:    Contem o registo das alterações realizadas no documento. Está em formato markdown
+%%                     e segue a norma Conventional Changelog
+%%  - referencias.bib: Ficheiro com as referencias bibliográficas
+%%  - conteudo.tex:    Ficheiro onde deve ser "escrito" o documento per se
+%%  - siglas.tex:      Ficheiro com as siglas e acrónimos que serão usados no documento.
+%%  - media/*          Diretoria com as imagens usadas no template. Outras imagens usadas no documento
+%%                     devem ser colocadas aqui.
+%%  - LICENSE.txt:     Ficheiro com a licença do template. Não deve ser apagado
+%% ------------------------------------------------------------------------------
+
+
+\documentclass[a4paper,11pt]{report}
+
+% Language setting
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[portuguese]{babel}
+\usepackage{csquotes}
+\usepackage{markdown}
+\usepackage{longtable}
+
+
+% Set page size and margins
+\usepackage[a4paper,top=3.25cm,bottom=2.54cm,left=1.5cm,right=1.5cm,marginparwidth=1.25cm, headheight=1.5cm]{geometry}
+
+% Useful packages
+\usepackage[backend=biber, style=numeric]{biblatex}
+\addbibresource{referencias.bib}
+\usepackage{amsmath}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[colorlinks=true, allcolors=black]{hyperref}
+\usepackage{multicol}
+\usepackage{tikz}
+\usepackage{soul}
+\usepackage{enumitem}
+\usepackage[table]{xcolor}
+\usepackage[numbered,open,openlevel=1]{bookmark}
+
+
+% Font setup - Using a lightweight sans-serif
+% Option 1: Source Sans Pro (very similar to Calibri)
+\usepackage[light]{sourcesanspro}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Option 2: Uncomment these for Tex Gyre Heros (Helvetica-like font)
+%\usepackage{tgheros}
+%\renewcommand{\familydefault}{\sfdefault}
+
+% Option 3: Uncomment these for Fira Sans Light
+%\usepackage[light]{FiraSans}
+%\renewcommand{\familydefault}{\sfdefault}
+
+% option 4: Uncomment these for helvetica clone
+%\usepackage[light]{helvet}
+%\renewcommand{\familydefault}{\sfdefault}
+
+% siglas e acronimos package
+\usepackage[acronym]{glossaries}
+
+\newglossarystyle{long3colbold}{
+  \setglossarystyle{long3col} % herda estrutura do estilo original
+
+  % Modifica só o conteúdo das células
+  \renewcommand*{\glossentry}[2]{%
+    \textbf{\glsentryshort{##1}} & \glsentrydesc{##1} & ##2\\
+  }
+
+  \renewcommand*{\subglossentry}[3]{%
+    \textbf{\glsentryshort{##2}} & \glsentrydesc{##2} & ##3\\
+  }
+
+  % Remove o ambiente center
+  \renewenvironment{theglossary}
+    {\begin{longtable}{@{}p{2cm}p{12.5cm}p{1.5cm}@{}}}
+    {\end{longtable}}
+}
+\setglossarystyle{long3colbold}
+\makeglossaries
+
+
+% Load the metadata
+\input{metadata.tex}
+
+%% COLORS %%
+% Define the green color for PROCEDIMENTO
+\definecolor{procegreen}{HTML}{12654E}
+\definecolor{tableheader}{HTML}{B6D7D2}
+
+% Define a command to convert text to uppercase
+\newcommand{\toUpper}[1]{\expandafter\uppercase\expandafter{#1}}
+
+% Custom section formatting with green color
+\usepackage{titlesec}
+%\titleformat{\chapter}{\color{procegreen}\large\bfseries\uppercase}{\thechapter.}{1em}{}
+\titleformat{\section}{\color{procegreen}\large\bfseries\uppercase}{\thesection}{1em}{}
+\titleformat{\subsection}{\color{procegreen}\normalsize\bfseries\uppercase}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\color{procegreen}\normalsize\bfseries\uppercase}{\thesubsubsection}{1em}{}
+
+% Contador para os anexos
+\newcounter{anexocounter}
+\renewcommand{\theanexocounter}{\Roman{anexocounter}}
+
+\newcommand{\anexo}[1]{%
+  \clearpage%
+  \thispagestyle{fancy}%
+  \refstepcounter{anexocounter}%
+  \vspace{2em}%
+  {\color{procegreen}\large\bfseries\uppercase{Anexo \theanexocounter. #1}\par}%
+  \addcontentsline{toc}{subsection}{Anexo \theanexocounter. #1}%
+  \vspace{1em}%
+}
+
+
+% Set global list styles for enumerate
+\setlist{nosep}
+\setlist[enumerate,1]{label=\arabic*., topsep=8pt,itemsep=0pt,partopsep=0pt, parsep=4pt}
+\setlist[enumerate,2]{label=\alph*), topsep=0pt,itemsep=0pt,partopsep=0pt, parsep=4pt}
+\setlist[enumerate,3]{label=\roman*., topsep=0pt,itemsep=0pt,partopsep=0pt, parsep=4pt}
+
+\setlength{\parindent}{0pt}
+
+% Remove chapter/section numbering
+\setcounter{secnumdepth}{0}
+
+% Format the TOC entries without numbers
+\usepackage{tocloft}
+\renewcommand{\cftchappresnum}{}
+\renewcommand{\cftsecpresnum}{}
+\renewcommand{\cftsubsecpresnum}{}
+\renewcommand{\cftsubsubsecpresnum}{}
+
+
+% Setup the header with the logos
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+% Create the header with logo images
+\fancyhead[L]{%
+  \begin{minipage}{0.75\textwidth}
+    \raisebox{-0.15cm}{\includegraphics[height=1cm]{media/republica_portuguesa.png}}%
+    \hspace{0.2cm}%
+    \raisebox{0pt}{\includegraphics[height=1cm]{media/SNS_logocurto_cor.png}}%
+    \hspace{0.2cm}%
+    \raisebox{0.11cm}{\includegraphics[height=0.83cm]{media/uls_oeste_logo.png}}%
+  \end{minipage}%
+}
+\fancyhead[R]{%
+  \begin{minipage}{0.4\textwidth}
+    \raggedleft PROCEDIMENTO \procedimentoNumero
+  \end{minipage}%
+}
+\fancyfoot[C]{\thepage}
+
+
+% Ficha Técnica page wrapped in a custom environment
+\newenvironment{fichatecnica}{%
+  \clearpage
+  \thispagestyle{fancy}
+  \vspace*{-0.5cm}
+  {\Large\bfseries\color{procegreen}FICHA TÉCNICA\par}
+  \vspace{1cm}
+}{%
+  \clearpage
+}
+
+% capa dos anexos
+\newenvironment{capaanexos}{
+  \clearpage
+  \pagestyle{empty}
+  \begin{tikzpicture}[remember picture,overlay]
+}{
+  \end{tikzpicture}
+  \restoregeometry
+  \clearpage
+  \pagestyle{fancy}
+  \thispagestyle{fancy}
+}
+
+
+%% para adicionar e remover entradas no TOC
+\let\oldaddcontentsline\addcontentsline
+\newcommand{\stoptocentries}{\renewcommand{\addcontentsline}[3]{}}
+\newcommand{\starttocentries}{\let\addcontentsline\oldaddcontentsline}
+
+% Alterar "Tabela" para "Quadro" em todas as legendas de tabelas
+\renewcommand{\tablename}{Quadro}
+
+% WATERMARK
+\usepackage{draftwatermark}
+\ifdefined\estadodraft%
+    \SetWatermarkText{DRAFT}
+    \SetWatermarkScale{2}
+\fi
+
+
+\begin{document}
+
+% numeracao para ficha tecnica, toc, etc...
+\pagenumbering{roman} % Start with roman numerals
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CAPA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+\newgeometry{top=0cm, bottom=0cm, left=0cm, right=0cm, noheadfoot}
+\begin{tikzpicture}[remember picture,overlay]
+  % Place background image covering the entire page
+  \node[anchor=center] at (current page.center) {
+    \includegraphics[width=\paperwidth,height=\paperheight]{media/fundo_capa.png}
+  };
+  
+  % Add the title text
+  \node[anchor=north west, text width=0.75\paperwidth, align=left] 
+    at ([xshift=3cm, yshift=-8cm]current page.north west) {
+    \fontsize{16}{20}\selectfont\bfseries\color{procegreen}
+    PROCEDIMENTO \procedimentoNumero \\[0.4cm]
+    \fontsize{14}{18}\selectfont\bfseries\color{black}
+    \procedimentoTitulo \\[0.3cm]
+    \fontsize{12}{16}\selectfont\mdseries
+    Versão \procedimentoVersao\\[0.5cm]
+    \fontsize{12}{16}\selectfont\mdseries
+    \procedimentoData\\
+  };
+
+\end{tikzpicture}
+\restoregeometry
+\end{titlepage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Fix for header display on all pages
+\pagestyle{fancy}  % Set fancy style as default for all pages
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FICHA TECNICA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Usage in the document
+\begin{fichatecnica}
+{\large\bfseries TÍTULO\par}
+\procedimentoTitulo
+\vspace{0.5cm}
+
+{\large\bfseries NÚMERO\par}
+\procedimentoNumero
+\vspace{0.5cm}
+
+{\large\bfseries VERSÃO\par}
+Versão \procedimentoVersao
+\vspace{0.5cm}
+
+{\large\bfseries DESTINATÁRIOS\par}
+\procedimentoDestinatarios
+\vspace{0.5cm}
+
+{\large\bfseries PALAVRAS-CHAVE\par}
+\procedimentoPalavrasChave
+\vspace{0.5cm}
+
+{\large\bfseries AUTORES\par}
+\listarAutores
+\vspace{0.5cm}
+
+{\large\bfseries CONTACTOS\par}
+Departamento de Saúde Pública e das Populações
+Morada: blabla\\
+XXX-XXX Caldas da Rainha\\
+Tel.: XXX XXX XXX\\
+E-mail: XX@XX.XX\\
+\vspace{0.5cm}
+
+{\large\bfseries CONTROLO DE PUBLICAÇÕES\par}
+\vspace{0.3cm}
+\begin{center}
+\tabelaControloVersao
+\end{center}
+\end{fichatecnica}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ÍNDICE (TOC)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+% Customize TOC title
+\renewcommand{\contentsname}{\color{procegreen}\Large\bfseries\uppercase{ÍNDICE}}
+\vspace*{-2cm}
+\tableofcontents
+\thispagestyle{fancy}  % Force fancy style after tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ÍNDICE DE QUADROS E FIGURAS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\listfigurename}{\color{procegreen}\Large\bfseries\uppercase{ÍNDICE DE FIGURAS}}
+\renewcommand{\listtablename}{\color{procegreen}\Large\bfseries\uppercase{ÍNDICE DE QUADROS}}
+
+% List of tables (quadros)
+\clearpage
+\vspace*{-2cm}
+\listoftables
+\thispagestyle{fancy}  % Force fancy style after listoftables
+
+\vspace{1.5cm}
+% List of figures
+\listoffigures
+\thispagestyle{fancy}  % Force fancy style after listoffigures
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SIGLAS E ACRÓNIMOS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SIGLAS E ACRÓNIMOS
+\clearpage
+\thispagestyle{fancy}
+\vspace*{-0.5cm}
+{\color{procegreen}\Large\bfseries\uppercase{SIGLAS E ACRÓNIMOS}\par}
+\vspace{0.5cm}
+
+\begingroup
+\renewcommand*{\glossarysection}[2][]{} % impede qualquer título ou secção
+\printglossary[type=\acronymtype]
+\endgroup
+
+\thispagestyle{fancy} % repõe caso o glossário tenha alterado o estilo
+
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+
+%\begin{tabular}{p{3cm}p{13.5cm}p{2cm}}
+%\textbf{DGS} & Direção-Geral da Saúde & 1,3 \\
+%\textbf{ULSO} & Unidade Local de Saúde do Oeste & 1 \\
+%\textbf{XXXXXXX} & kfsdkfsdhf skdjfhskjdfhksdhfsd fsdf & 2 \\
+%\textbf{XXXXXXX} & kfsdkfsdhf skdjfhskjdfhksdhfsd fsdf & 2  \\
+%\textbf{XXXXXXX} & kfsdkfsdhf skdjfhskjdfhksdhfsd fsdf & 2  \\
+%\textbf{XXXXXXX} & kfsdkfsdhf skdjfhskjdfhksdhfsd fsdf & 2  \\
+%\end{tabular}
+%\clearpage
+
+
+%% RESET PAGE NUMBERING TO ARABIC
+\pagenumbering{arabic} % Switch to arabic numerals
+\setcounter{page}{1} % Reset page counter to 1
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%
+%%%%%%%
+\input{siglas}
+\input{conteudo}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\printbibliography[title={Documentos de Referência}]
+
+\newpage
+
+% changelog
+\section{Registo de Alterações}\label{sec:registo-de-alteracoes}
+\nopagebreak
+\stoptocentries% Stop adding content to the ToC
+
+% Define section and subsection titles without numbering
+\titleformat{\section}[block]{\normalfont\Large\bfseries}{}{0em}{}
+\titleformat{\subsection}[block]{\normalfont\large\bfseries}{}{0em}{}
+
+\markdownInput{changelog.md}
+
+% Restore the original section and subsection titles
+\titleformat{\section}[block]{\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[block]{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+\starttocentries% Resume adding content to the ToC
+
+\ifdefined\usaranexos
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %% CAPA ANEXOS
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \newpage
+    \begin{capaanexos}
+      % Imagem de fundo
+      \node[anchor=center] at (current page.center) {
+        \includegraphics[width=\paperwidth,height=\paperheight]{media/fundo2.png}
+      };
+    
+      % Título
+      \node[anchor=north west, text width=0.75\paperwidth, align=left] 
+        at ([xshift=3cm, yshift=-20cm]current page.north west) {
+        \fontsize{30}{40}\selectfont\bfseries\color{procegreen} ANEXOS\\
+      };
+    
+      % Entrada no índice
+      \addcontentsline{toc}{section}{Anexos}
+    \end{capaanexos}
+    
+    \input{anexos}
+\fi
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CONTRA CAPA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{capaanexos}
+  % Imagem de fundo
+  \node[anchor=center] at (current page.center) {
+    \includegraphics[width=\paperwidth,height=\paperheight]{media/contracapa.jpg}
+  };
+\end{capaanexos}
+
+
+\end{document}

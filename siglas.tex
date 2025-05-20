@@ -1,0 +1,34 @@
+%% ----------------------------------------------------------------------------
+% COMANDOS:
+%
+%    \newacronym{ulso}{ULSO}{Unidade Local de Saúde do Oeste}
+%      Parametro 1. O label para referir no texto com o comando gls{}. Neste exemplo, gls{ulso}
+%      Parametro 2. A sigla/acrónimo. Geralmente em maiusculas. Neste exemplo, ULSO
+%      Parametro 3. A designação por extenso da sigla/acrónimo.
+%   
+%    \gls{ulso}            mostra a sigla. Na primeira utilização mostra por extenso e a sigla
+%    \glsentryshort{ulso}  Mostra apenas a sgila mesmo que seja a primeira utilização
+%    \glsentrylong{ulso}   Mostra esempre por extenso
+%
+% INSTRUCOES DE USO:
+%    No texto, quando queremos usar uma sigla devemos usar /gls{label}. Na primeira utilização, apareceça por extenso, nas subsequentes
+%    aparece apenas a sigla.
+%
+%
+% EXEMPLO:
+%    \newacronym{ulso}{ULSO}{Unidade Local de Saúde do Oeste}
+%    \newacronym{DGS}{DGS}{Direção-Geral da Saúde}
+%
+%    A \gls{ulso} trabalha em articulação estreita com a \gls{DGS}. Existem Médicos de Saúde Pública a 
+%    trabalhar tanto na \gls{ulso} na \gls{dgs}.
+%
+% output:
+%    A Unidade Local de Saúde do Oeste (ULSO) trabalha em articulação estreita com a Direção-Geral da Saúde (DGS). 
+%    Existem Médicos de Saúde Pública a trabalhar tanto na ULSO como na DGS.
+%% ----------------------------------------------------------------------------
+\newacronym{ulso}{ULSO}{Unidade Local de Saúde do Oeste}
+\newacronym{DGS}{DGS}{Direção-Geral da Saúde}
+\newacronym{sinave}{SINAVE}{Sistema Nacional de Vigilância Epidemiológica}
+\newacronym{FOO}{FOO}{Foobar}
+\newacronym{bar}{BAR}{Barista}
+\newacronym{HTA}{HTA}{Hipertensão Arterial}
