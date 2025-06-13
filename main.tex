@@ -105,6 +105,9 @@
 % Load the metadata
 \input{metadata.tex}
 
+% Load siglas.tex
+\input{siglas}
+
 %% COLORS %%
 % Define the green color for PROCEDIMENTO
 \definecolor{procegreen}{HTML}{12654E}
@@ -212,8 +215,9 @@
 \renewcommand{\tablename}{Quadro}
 
 % WATERMARK
-\usepackage{draftwatermark}
+
 \ifdefined\estadodraft%
+    \usepackage{draftwatermark}
     \SetWatermarkText{DRAFT}
     \SetWatermarkScale{2}
 \fi
@@ -290,11 +294,11 @@ Versão \procedimentoVersao
 \vspace{0.5cm}
 
 {\large\bfseries CONTACTOS\par}
-Departamento de Saúde Pública e das Populações
-Morada: blabla\\
-XXX-XXX Caldas da Rainha\\
-Tel.: XXX XXX XXX\\
-E-mail: XX@XX.XX\\
+Departamento de Saúde Pública e das Populações\\
+Rua Diário de Notícias\\
+2500-176 Caldas da Rainha\\
+Tel.: 262 248 840 / 261 336 370\\
+E-mail: dsppoeste@ulso.min-saude.pt\\
 \vspace{0.5cm}
 
 {\large\bfseries CONTROLO DE PUBLICAÇÕES\par}
