@@ -382,8 +382,10 @@ E-mail: dsppoeste@ulso.min-saude.pt\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Documentos de Referência}\label{sec:referencias}
-\printbibliography[heading=none]
+\ifdefined\usarbibliografia
+    \section{Documentos de Referência}\label{sec:referencias}
+    \printbibliography[heading=none]
+\fi
 
 \newpage
 
