@@ -366,7 +366,6 @@ E-mail: dsppoeste@ulso.min-saude.pt\\
 \pagenumbering{arabic} % Switch to arabic numerals
 \setcounter{page}{1} % Reset page counter to 1
 \clearpage
-\phantomsection
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% CONTEUDO
@@ -374,16 +373,22 @@ E-mail: dsppoeste@ulso.min-saude.pt\\
 
 \begin{onehalfspace}
     \setlist{topsep=1em, itemsep=1em}
+    \let\oldsection\section
+    \renewcommand{\section}{\phantomsection\oldsection}
+    \let\oldsubsection\subsection
+    \renewcommand{\subsection}{\phantomsection\oldsubsection}
     \input{conteudo}
 \end{onehalfspace}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\printbibliography[title={Documentos de Referência}]
+\section{Documentos de Referência}\label{sec:referencias}
+\printbibliography[heading=none]
 
 \newpage
 
 % changelog
+\clearpage
 \section{Registo de Alterações}\label{sec:registo-de-alteracoes}
 \nopagebreak
 \stoptocentries% Stop adding content to the ToC
@@ -418,6 +423,7 @@ E-mail: dsppoeste@ulso.min-saude.pt\\
       };
     
       % Entrada no índice
+      \phantomsection
       \addcontentsline{toc}{section}{Anexos}
     \end{capaanexos}
     
